@@ -6,10 +6,13 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
 public class SpringBootBasicsApplication {
+	
+	
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(SpringBootBasicsApplication.class, args);
 		First f = context.getBean(First.class);
+		f.display();
 	}
 
 }
