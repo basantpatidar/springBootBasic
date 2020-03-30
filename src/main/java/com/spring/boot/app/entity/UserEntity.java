@@ -1,19 +1,40 @@
-package com.spring.boot.app.model;
+package com.spring.boot.app.entity;
 
-public class SignupDTO {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table
+public class UserEntity {
+	
+	@GeneratedValue
+	@Id
 	private long id;
+	
+	@Column
 	private String firstName;
+	
+	@Column
 	private String lastName;
+	
+	@Column
 	private String emailAddress;
+	
+	@Column
 	private String username;
+	
+	@Column
 	private String password;
 	
-	public SignupDTO() {
+	public UserEntity() {
 		
 	}
 	
-	public SignupDTO(long id, String firstName, String lastName, String emailAddress, String username, String password) {
+	public UserEntity(long id, String firstName, String lastName, String emailAddress, String username,
+			String password) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -26,11 +47,9 @@ public class SignupDTO {
 	public long getId() {
 		return id;
 	}
-
 	public void setId(long id) {
 		this.id = id;
 	}
-
 	public String getFirstName() {
 		return firstName;
 	}
@@ -62,4 +81,5 @@ public class SignupDTO {
 		this.password = password;
 	}
 	
+
 }
