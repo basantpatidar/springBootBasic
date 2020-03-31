@@ -54,4 +54,10 @@ public class SignupFormRest {
 		return user;
 	}
 	
+	@RequestMapping(value="/count", method=RequestMethod.GET)
+	public Long totalCount() {
+		return signupService.userCount();
+		
+	}
+	
 }
