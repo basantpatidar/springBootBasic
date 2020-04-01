@@ -1,5 +1,6 @@
 package com.spring.boot.app.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Singleton;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring.boot.app.exception.MyException;
+import com.spring.boot.app.form.SignupForm;
 import com.spring.boot.app.model.SignupDTO;
 import com.spring.boot.app.service.SignupService;
 
@@ -49,14 +52,28 @@ public class SignupFormRest {
 	}
 
 	@RequestMapping(value="/getByUsername", method=RequestMethod.GET)
-	public List<SignupDTO> getByUsername(@RequestParam("username") String username) {
-		List<SignupDTO> user = signupService.getByUsername(username);
-		return user;
+	public SignupForm getByUsername(@RequestParam("username") String username){
+		List<SignupDTO> user = new ArrayList<SignupDTO>();
+		SignupForm form = null;
+		try {
+			user = signupService.getByUsername(username);
+			form = new SignupForm(null, user,null);
+		}catch(MyException exp) {
+			form = new SignupForm(null, null, exp);
+		}
+		return form;
 	}
 	
 	@RequestMapping(value="/count", method=RequestMethod.GET)
 	public Long totalCount() {
 		return signupService.userCount();
+		
+	}
+	
+	@RequestMapping(value="/search", method=RequestMethod.GET)
+	public Long totalTargetCount(@RequestParam("target") String targetType){
+		Long count = SignupService.totalTargetCount(targetType);
+		return count;
 		
 	}
 	
