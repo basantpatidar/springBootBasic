@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.spring.boot.app.adaptor.SignupAdaptor;
 import com.spring.boot.app.dao.SignupRepository;
 import com.spring.boot.app.entity.UserEntity;
+import com.spring.boot.app.exception.MyException;
+import com.spring.boot.app.exception.UserExistException;
+import com.spring.boot.app.exception.UserNotFoundException;
 import com.spring.boot.app.model.SignupDTO;
 
 @Service
@@ -18,20 +22,29 @@ public class SignupService {
 	@Autowired
 	private SignupRepository signupRepository;
 
-	public SignupDTO createSignup(SignupDTO signup) {
+	public SignupDTO createSignup(SignupDTO signup) throws UserExistException {
 
 		UserEntity se = SignupAdaptor.dtoToEntity(signup);
-
+	
+		List<UserEntity> ue =  signupRepository.findByUsername(signup.getUsername());
+		
+		if(null != ue) {
+			throw new UserExistException("User Already Exists");
+		}
 		signupRepository.save(se);
 
 		return signup;
 	}
 
-	public SignupDTO getUserDetails(long id) {
+	public SignupDTO getUserDetails(long id) throws UserNotFoundException {
 
 //			GetUserDTO gud = SignupAdaptor.convertEntityToDTO(userEntity);
 
 		Optional<UserEntity> user = signupRepository.findById(id);
+		
+		if(!user.isPresent()) {
+			throw new UserNotFoundException("User not available with given ID. Please provide proper ID");
+		}
 
 		UserEntity ue = user.get();
 
@@ -41,16 +54,26 @@ public class SignupService {
 
 	}
 
-	public SignupDTO updateUser(SignupDTO signup) {
+	public SignupDTO updateUser(SignupDTO signup) throws UserNotFoundException{
 
 		UserEntity se = SignupAdaptor.dtoToEntity(signup);
-
+		
+		Optional<UserEntity> user = signupRepository.findById(signup.getId());
+		
+		if(!user.isPresent()) {
+			throw new UserNotFoundException("User not available with given ID. Please provide proper ID");
+		}
 		signupRepository.save(se);
 
 		return signup;
 	}
 
-	public void deleteUser(long id) {
+	public void deleteUser(long id) throws UserNotFoundException{
+//		boolean isDeleted = false;
+		Optional<UserEntity> user = signupRepository.findById(id);
+		if(user.isEmpty()) {
+			throw new UserNotFoundException("User not present");
+		}
 		signupRepository.deleteById(id);
 	}
 
@@ -67,23 +90,28 @@ public class SignupService {
 
 	}
 
-	public List<SignupDTO> getByUsername(String username) {
+	public List<SignupDTO> getByUsername(String username) throws MyException {
 
 		List<SignupDTO> signup = new ArrayList<SignupDTO>();
 
 		List<UserEntity> userentity = new ArrayList<UserEntity>();
+		
+		try {
+			userentity = signupRepository.findByUsername(username);
 
-		userentity = signupRepository.findByUsername1(username);
-
-		for (UserEntity user : userentity) {
-			signup.add(SignupAdaptor.entityToDTO(user));
+			for (UserEntity user : userentity) {
+				signup.add(SignupAdaptor.entityToDTO(user));
+			}
+		}catch(Exception exp) {
+			throw new MyException(HttpStatus.INTERNAL_SERVER_ERROR,"Due to INTERNAL SERVER ERROR, we're unable to process your request. Kindly try afer some time.",null, "ERROR");
 		}
-
 		return signup;
 	}
 	
-	public Long userCount() {
-		return signupRepository.count();
-	}
-
+	/*
+	 * public Long userCount() { return signupRepository.count(); }
+	 * 
+	 * public Long totalTargetCount(targetType){ return
+	 * signupRepository.count(targetType); }
+	 */
 }
