@@ -68,7 +68,7 @@ public class SignupFormRest {
 	}
 	
 	@RequestMapping(value="/getUsers", method=RequestMethod.GET)
-	public List<SignupDTO> getUser() {
+	public List<SignupDTO> getUser() throws UserNotFoundException{
 		List<SignupDTO> userList = signupService.getUsers();
 		return userList;
 	}
