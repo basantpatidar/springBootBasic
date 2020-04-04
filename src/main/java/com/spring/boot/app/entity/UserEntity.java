@@ -20,7 +20,7 @@ public class UserEntity {
 	@Column
 	private String lastName;
 	
-	@Column
+	@Column(nullable=false)
 	private String emailAddress;
 	
 	@Column
