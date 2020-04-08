@@ -5,13 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.spring.boot.app.adaptor.SignupAdaptor;
 import com.spring.boot.app.dao.SignupRepository;
 import com.spring.boot.app.entity.UserEntity;
-import com.spring.boot.app.exception.MyException;
 import com.spring.boot.app.exception.UserExistException;
 import com.spring.boot.app.exception.UserNotFoundException;
 import com.spring.boot.app.model.SignupDTO;
@@ -36,7 +34,7 @@ public class SignupService {
 		return signup;
 	}
 
-	public SignupDTO getUserDetails(long id) throws UserNotFoundException {
+	public SignupDTO getUserDetails(long id)  {
 
 //			GetUserDTO gud = SignupAdaptor.convertEntityToDTO(userEntity);
 
@@ -53,6 +51,24 @@ public class SignupService {
 		return gud;
 
 	}
+	
+	public SignupDTO getUserDetails1(long id)  {
+
+//		GetUserDTO gud = SignupAdaptor.convertEntityToDTO(userEntity);
+
+	Optional<UserEntity> user = signupRepository.findById(id);
+	
+	if(!user.isPresent()) {
+		throw new UserNotFoundException("User not available with given ID. Please provide proper ID");
+	}
+
+	UserEntity ue = user.get();
+
+	SignupDTO gud = SignupAdaptor.convertEntityToDTO(ue);
+
+	return gud;
+
+}
 
 	public SignupDTO updateUser(SignupDTO signup) throws UserNotFoundException{
 
@@ -77,11 +93,14 @@ public class SignupService {
 		signupRepository.deleteById(id);
 	}
 
-	public List<SignupDTO> getUsers() {
+	public List<SignupDTO> getUsers() throws UserNotFoundException{
 
 //		GetUserDTO gud = SignupAdaptor.convertEntityToDTO(userEntity);
 		List<SignupDTO> users = new ArrayList<SignupDTO>();
 		List<UserEntity> userList = signupRepository.findAll();
+		if(userList.isEmpty()) {
+			throw new UserNotFoundException("There are no users in Record");
+		}
 
 		for (UserEntity user : userList)
 			users.add(SignupAdaptor.entityToDTO(user));
@@ -90,21 +109,21 @@ public class SignupService {
 
 	}
 
-	public List<SignupDTO> getByUsername(String username) throws MyException {
+	public List<SignupDTO> getByUsername(String username) throws Exception {
 
 		List<SignupDTO> signup = new ArrayList<SignupDTO>();
 
 		List<UserEntity> userentity = new ArrayList<UserEntity>();
 		
-		try {
+		/* try { */
 			userentity = signupRepository.findByUsername(username);
 
 			for (UserEntity user : userentity) {
 				signup.add(SignupAdaptor.entityToDTO(user));
 			}
-		}catch(Exception exp) {
+		/*}catch(Exception exp) {
 			throw new MyException(HttpStatus.INTERNAL_SERVER_ERROR,"Due to INTERNAL SERVER ERROR, we're unable to process your request. Kindly try afer some time.",null, "ERROR");
-		}
+		}*/
 		return signup;
 	}
 	
