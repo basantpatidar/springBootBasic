@@ -25,8 +25,8 @@ public class SignupService {
 		UserEntity se = SignupAdaptor.dtoToEntity(signup);
 	
 		List<UserEntity> ue =  signupRepository.findByUsername(signup.getUsername());
-		
-		if(null != ue) {
+		System.out.println(ue.toString());
+		if(null != ue && !ue.isEmpty()) {
 			throw new UserExistException("User Already Exists");
 		}
 		signupRepository.save(se);
