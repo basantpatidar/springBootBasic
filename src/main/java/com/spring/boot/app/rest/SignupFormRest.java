@@ -3,15 +3,16 @@ package com.spring.boot.app.rest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContext;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,15 +30,17 @@ import com.spring.boot.app.service.SignupService;
 @Singleton
 @RestController
 public class SignupFormRest {
-	
+	///a & b = a-> b -> a
 	@Autowired
 	ResourceBundleMessageSource messageSource ;
 	
 	@Autowired 
-	private SignupService signupService;
+	private SignupService signupService ;
+	
 	@RequestMapping(value="/signup" , method= RequestMethod.POST)
 	public SignupDTO signupUser(@RequestBody SignupDTO signup) {
 		try {
+			System.out.println(signup.toString());
 		signupService.createSignup(signup);
 		}catch(UserExistException uee) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, uee.getMessage());
@@ -46,16 +49,26 @@ public class SignupFormRest {
 	}
 	
 	@RequestMapping(value="/getUser", method=RequestMethod.GET)
-	public SignupDTO getUser(@RequestParam("id") long id, HttpServletRequest request) {
-		SignupDTO gud = null;
+	public MappingJacksonValue getUser(@RequestParam("id") long id, @RequestParam("filter") Set<String> filter) {
+		MappingJacksonValue gud = null;
 		try {
-			 gud = signupService.getUserDetails(id);
+			 gud = signupService.getUserDetails(id, filter);
 		}catch(UserNotFoundException unf) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND,unf.getMessage());
 		}
 		return gud;
 	}
 	
+	@RequestMapping(value="/filter/getUser", method=RequestMethod.GET)
+	public MappingJacksonValue getUserFilter(@RequestParam("id") long id, HttpServletRequest request) {
+		MappingJacksonValue gud = null;
+		try {
+			 gud = signupService.getUserDetails(id, null);
+		}catch(UserNotFoundException unf) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND,unf.getMessage());
+		}
+		return gud;
+	}
 	@RequestMapping(value="/getUser1", method=RequestMethod.GET)
 	public SignupDTO getUser1(@RequestParam("id") long id) {
 		SignupDTO gud = null;
