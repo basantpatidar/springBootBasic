@@ -38,14 +38,15 @@ public class SignupFormRest {
 	private SignupService signupService ;
 	
 	@RequestMapping(value="/signup" , method= RequestMethod.POST)
-	public SignupDTO signupUser(@RequestBody SignupDTO signup) {
+	public MappingJacksonValue signupUser(@RequestBody SignupDTO signup) {
+		MappingJacksonValue gud = null;
 		try {
 			System.out.println(signup.toString());
-		signupService.createSignup(signup);
+		 gud = signupService.createSignup(signup);
 		}catch(UserExistException uee) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, uee.getMessage());
 		}
-		return signup;
+		return gud;
 	}
 	
 	@RequestMapping(value="/getUser", method=RequestMethod.GET)
