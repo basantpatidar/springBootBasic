@@ -1,9 +1,9 @@
 package com.spring.boot.app.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonFilter;
 
-@JsonIgnoreProperties(value= {"lastName","username"})
+//@JsonIgnoreProperties(value= {"lastName","username"})
+@JsonFilter(value="signupFilter")
 public class SignupDTO {
 	
 	//@JsonIgnore
