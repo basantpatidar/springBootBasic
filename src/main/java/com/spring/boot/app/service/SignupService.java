@@ -26,7 +26,7 @@ public class SignupService {
 	@Autowired
 	private SignupRepository signupRepository;
 
-	public SignupDTO createSignup(SignupDTO signup) throws UserExistException {
+	public MappingJacksonValue createSignup(SignupDTO signup) throws UserExistException {
 
 		UserEntity se = SignupAdaptor.dtoToEntity(signup);
 	
@@ -35,9 +35,17 @@ public class SignupService {
 		if(null != ue && !ue.isEmpty()) {
 			throw new UserExistException("User Already Exists");
 		}
-		signupRepository.save(se);
-
-		return signup;
+		UserEntity userEntity = signupRepository.save(se);
+		SignupDTO signupDTO = SignupAdaptor.convertEntityToDTO(userEntity);
+		
+		  Set<String> fileds = new HashSet<String>(); fileds.add("username");
+		  fileds.add("firstName");
+		 
+		SimpleFilterProvider filter = new SimpleFilterProvider();
+				filter.addFilter("signupFilter", SimpleBeanPropertyFilter.filterOutAllExcept(fileds));
+		MappingJacksonValue mapper = new MappingJacksonValue(signupDTO);
+		mapper.setFilters(filter);
+		return mapper;
 	}
 
 	public MappingJacksonValue getUserDetails(long id, Set<String> fields)  {
