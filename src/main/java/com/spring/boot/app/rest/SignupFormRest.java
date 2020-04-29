@@ -34,8 +34,14 @@ public class SignupFormRest {
 	@Autowired
 	ResourceBundleMessageSource messageSource ;
 	
-	@Autowired 
-	private SignupService signupService ;
+	
+	 private SignupService signupService ;
+	
+	
+	@Autowired
+	SignupFormRest(SignupService signupService){
+		this.signupService = signupService;
+	}
 	
 	@RequestMapping(value="/signup" , method= RequestMethod.POST)
 	public MappingJacksonValue signupUser(@RequestBody SignupDTO signup) {

@@ -6,11 +6,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.spring.boot.app.adaptor.SignupAdaptor;
@@ -47,7 +48,6 @@ public class SignupService {
 		mapper.setFilters(filter);
 		return mapper;
 	}
-
 	public MappingJacksonValue getUserDetails(long id, Set<String> fields)  {
 
 //			GetUserDTO gud = SignupAdaptor.convertEntityToDTO(userEntity);
