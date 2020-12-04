@@ -16,22 +16,4 @@ public class CustomException extends ResponseEntityExceptionHandler{
 			System.out.println("UserNotFoundException");
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(unf.getMessage());
 		}
-		
-		@ExceptionHandler(UserExistException.class)
-		public ResponseEntity<String> HandleUserExistException(UserExistException uef) {
-			System.out.println("UserExistException");
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(uef.getMessage());
-		}
-		
-		@ExceptionHandler(value= {NullPointerException.class})
-		public ResponseEntity<String> HandleUserExistException(NullPointerException npe) {
-			System.out.println("NullPointerException");
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(npe.getMessage());
-		}
-		
-		@ExceptionHandler(value= {Exception.class})
-		public ResponseEntity<String> HandleGenericException(Exception npe) {
-			System.out.println("Exception");
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(npe.getMessage());
-		}
 }
