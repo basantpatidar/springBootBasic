@@ -65,4 +65,18 @@ public class SignupFormRest {
 		}
 		return gud;
 	}
+	
+	@RequestMapping(value="/filter/getUser", method=RequestMethod.GET)
+	public MappingJacksonValue getUserFilter(@RequestParam("id") long id, HttpServletRequest request) {
+		MappingJacksonValue gud = null;
+		try {
+			 gud = signupService.getUserDetails(id, null);
+		}catch(UserNotFoundException unf) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND,unf.getMessage());
+		}
+		return gud;
+	}
+	
+
+	
 }
