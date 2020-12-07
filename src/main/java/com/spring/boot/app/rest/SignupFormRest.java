@@ -77,6 +77,16 @@ public class SignupFormRest {
 		return gud;
 	}
 	
-
+	@RequestMapping(value="/getUserOne", method=RequestMethod.GET)
+	public SignupDTO getUser1(@RequestParam("id") long id) {
+		SignupDTO gud = null;
+		/*try {*/
+			 gud = signupService.getUserDetails1(id);
+		/*
+		 * }catch(UserNotFoundException unf) { throw new
+		 * ResponseStatusException(HttpStatus.NOT_FOUND,unf.getMessage()); }
+		 */
+		return gud;
+	}
 	
 }
