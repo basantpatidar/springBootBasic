@@ -89,4 +89,15 @@ public class SignupFormRest {
 		return gud;
 	}
 	
+	@RequestMapping(value="/updateUser", method = RequestMethod.PUT)
+	public SignupDTO updateUser(@RequestBody SignupDTO signup) {
+		SignupDTO gud = null;
+		try {
+			 gud = signupService.updateUser(signup);
+		}catch(UserNotFoundException unf) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,unf.getMessage());
+		}
+		return gud;
+	}
+	
 }
