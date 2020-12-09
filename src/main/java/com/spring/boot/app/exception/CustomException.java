@@ -23,4 +23,10 @@ public class CustomException extends ResponseEntityExceptionHandler{
 			System.out.println("UserExistException");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(uef.getMessage());
 		}
+		
+		@ExceptionHandler(value= {NullPointerException.class})
+		public ResponseEntity<String> HandleUserExistException(NullPointerException npe) {
+			System.out.println("NullPointerException");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(npe.getMessage());
+		}
 }
