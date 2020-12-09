@@ -16,4 +16,11 @@ public class CustomException extends ResponseEntityExceptionHandler{
 			System.out.println("UserNotFoundException");
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(unf.getMessage());
 		}
+		
+		
+		@ExceptionHandler(UserExistException.class)
+		public ResponseEntity<String> HandleUserExistException(UserExistException uef) {
+			System.out.println("UserExistException");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(uef.getMessage());
+		}
 }
