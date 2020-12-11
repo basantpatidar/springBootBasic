@@ -100,4 +100,14 @@ public class SignupFormRest {
 		return gud;
 	}
 	
+	@RequestMapping(value="/deleteUser", method = RequestMethod.DELETE)
+	public String deleteUser(@RequestParam("id") long id) {
+		try{
+	signupService.deleteUser(id);	
+		}catch(UserNotFoundException unf) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, unf.getMessage());
+		}
+		return messageSource.getMessage("label.delete", null, LocaleContextHolder.getLocale());
+	}
+	
 }
