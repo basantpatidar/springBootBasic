@@ -110,4 +110,10 @@ public class SignupFormRest {
 		return messageSource.getMessage("label.delete", null, LocaleContextHolder.getLocale());
 	}
 	
+	@RequestMapping(value="/getUsers", method=RequestMethod.GET)
+	public List<SignupDTO> getUser() throws UserNotFoundException{
+		List<SignupDTO> userList = signupService.getUsers();
+		return userList;
+	}
+	
 }
