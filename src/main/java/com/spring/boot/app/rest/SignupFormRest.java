@@ -116,4 +116,11 @@ public class SignupFormRest {
 		return userList;
 	}
 	
+	@RequestMapping(value="/getUsersTest", method=RequestMethod.GET)
+	public String[] getUserTest() throws UserNotFoundException{
+		String username = "RAM";
+		String[] names = {};
+		return names;
+	}
+	
 }
