@@ -123,4 +123,17 @@ public class SignupFormRest {
 		return names;
 	}
 	
+	@RequestMapping(value="/getByUsername", method=RequestMethod.GET)
+	public SignupForm getByUsername(@RequestParam("username") String username) throws Exception{
+		List<SignupDTO> user = new ArrayList<SignupDTO>();
+		SignupForm form = null;
+		/* try { */
+			user = signupService.getByUsername(username);
+			//form = new SignupForm(null, user,null);
+		/*}catch(Exception exp) {
+			form = new SignupForm(null, null, exp);
+		}*/
+		return form;
+	}
+	
 }
