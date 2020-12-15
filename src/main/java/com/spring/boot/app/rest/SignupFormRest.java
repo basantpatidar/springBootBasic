@@ -136,4 +136,24 @@ public class SignupFormRest {
 		return form;
 	}
 	
+	/*
+	 * @RequestMapping(value="/count", method=RequestMethod.GET) public Long
+	 * totalCount() { return signupService.userCount();
+	 * 
+	 * }
+	 */
+	
+	/*
+	 * @RequestMapping(value="/search", method=RequestMethod.GET) public Long
+	 * totalTargetCount(@RequestParam("target") String targetType){ Long count =
+	 * SignupService.totalTargetCount(targetType); return count;
+	 * 
+	 * }
+	 */
+	
+	@RequestMapping("/i18")
+	public String i18(@RequestHeader("Accept-Language") String locale) {
+		return messageSource.getMessage("label.hello", null, new Locale(locale));
+		
+	}
 }
