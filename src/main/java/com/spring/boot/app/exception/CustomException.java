@@ -35,3 +35,5 @@ public class CustomException extends ResponseEntityExceptionHandler{
 			System.out.println("Exception");
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(npe.getMessage());
 }
+		
+}
