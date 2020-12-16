@@ -156,4 +156,9 @@ public class SignupFormRest {
 		return messageSource.getMessage("label.hello", null, new Locale(locale));
 		
 	}
+	
+	@RequestMapping("/i181")
+	public String i181() {
+		return messageSource.getMessage("label.hello", null, LocaleContextHolder.getLocale());
+	}
 }
